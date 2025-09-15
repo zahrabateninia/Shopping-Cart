@@ -1,5 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit"
 
+function makeItemSnapshot(product, quantity = 1) {
+    return {
+      id: String(product.id),
+      title: product.title,
+      priceCents: Math.round(product.price * 100), // store price in cents
+      image: product.images[0] || null,
+      quantity: Number(quantity) || 1,
+    }
+  }
+  
+  const initialState = {
+    // normalized shape
+    itemsById: {},
+    ids: [],
+  }
+
 const cartSlice = createSlice({
     name: 'cart',
     initialState,
@@ -54,4 +70,36 @@ const cartSlice = createSlice({
       },
     },
   })
+  
+  export const { 
+    addItem, 
+    removeItem, 
+    increaseQuantity, 
+    decreaseQuantity, 
+    clearCart, 
+    hydrateCart 
+  } = cartSlice.actions
+  
+  export default cartSlice.reducer
+
+  export const selectCartItemsArray = (state) =>
+    state.cart.ids.map((id) => state.cart.itemsById[id])
+  
+  export const selectCartTotalQuantity = (state) =>
+    selectCartItemsArray(state).reduce((acc, item) => acc + item.quantity, 0)
+  
+  export const selectCartTotalCents = (state) =>
+    selectCartItemsArray(state).reduce(
+      (acc, item) => acc + item.quantity * item.priceCents,
+      0
+    )
+  
+  export const selectCartTotalFormatted = (state) => {
+    const cents = selectCartTotalCents(state)
+    // ex: 11997 → "$119.97"
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+    }).format(cents / 100)
+  }
   
