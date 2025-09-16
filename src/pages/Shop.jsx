@@ -1,31 +1,30 @@
-import { useQuery } from '@tanstack/react-query'
-import { fetchProducts } from '@/lib/api'
+import { useQuery } from "@tanstack/react-query"
+import ProductCard from "@/components/ProductCard"
+import { useDispatch } from "react-redux"
+import { addItem } from "@/features/cart/cartSlice"
+import { fetchProducts } from "@/lib/api"
 
 export default function Shop() {
-  const { data, isPending, error } = useQuery({
-    queryKey: ['products'],
+  const { data = [], isPending, error } = useQuery({
+    queryKey: ["products"],
     queryFn: fetchProducts,
   })
 
-  if (isPending) return <p>Loading products...</p>
-  if (error) return <p>Something went wrong: {error.message}</p>
+  const dispatch = useDispatch()
+  const handleAddToCart = (product) => dispatch(addItem({ product, quantity: 1 }))
+
+  if (isPending) return <p className="p-8 text-center">Loading products…</p>
+  if (error) return <p className="p-8 text-center text-red-600">Error loading products</p>
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-      {data.map((product) => (
-        <div key={product.id} className="border rounded-lg p-4 shadow">
-          <img
-            src={product.images?.[0]}
-            alt={product.title}
-            className="h-40 w-full object-cover rounded"
-          />
-          <h2 className="mt-2 font-semibold">{product.title}</h2>
-          <p className="text-gray-600">${product.price}</p>
-          <button className="mt-2 w-full bg-blue-600 text-white py-1 rounded">
-            Add to Cart
-          </button>
+    <section className="px-4 py-6">
+      <div className="mx-auto max-w-7xl">
+        <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-items-center">
+          {data.map((product) => (
+            <ProductCard key={product.id} product={product} onAddToCart={handleAddToCart} />
+          ))}
         </div>
-      ))}
-    </div>
+      </div>
+    </section>
   )
 }
