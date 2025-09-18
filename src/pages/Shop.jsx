@@ -18,8 +18,8 @@ export default function Shop() {
 
   return (
     <section className="px-4 py-6">
-      <div className="mx-auto max-w-7xl">
-        <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-items-center">
+      <div>
+        <div className="flex flex-wrap gap-5 justify-items-center">
           {data.map((product) => (
             <ProductCard key={product.id} product={product} onAddToCart={handleAddToCart} />
           ))}
