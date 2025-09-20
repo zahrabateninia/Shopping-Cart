@@ -4,6 +4,22 @@ import { useDispatch } from "react-redux"
 import { addItem } from "@/features/cart/cartSlice"
 import { fetchProducts } from "@/lib/api"
 import ProductCardSkeleton from "@/components/ProductCardSkeleton"
+import { motion } from "framer-motion"
+
+const containerVariants = {
+  hidden: { opacity: 1 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+    },
+  },
+}
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 },
+}
 
 export default function Shop() {
   const { data = [], isPending, error } = useQuery({
@@ -15,25 +31,40 @@ export default function Shop() {
   const handleAddToCart = (product) => dispatch(addItem({ product, quantity: 1 }))
 
   if (isPending) {
-  return (
-    <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-      {Array.from({ length: 8 }).map((_, i) => (
-        <ProductCardSkeleton key={i} />
-      ))}
-    </div>
-  )
-}
+    return (
+      <motion.div
+        className="flex flex-wrap gap-5 items-center justify-center"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        layout
+      >
+        {Array.from({ length: 12 }).map((_, i) => (
+          <ProductCardSkeleton key={i} />
+        ))}
+      </motion.div>
+    )
+  }
+
   if (error) return <p className="p-8 text-center text-red-600">Error loading products</p>
 
   return (
     <section className="px-4 py-6">
-      <div>
-        <div className="flex flex-wrap gap-5  items-center justify-center">
+      <motion.div variants={containerVariants} initial="hidden" animate="visible" layout>
+        <motion.div
+          className="flex flex-wrap gap-5 items-center justify-center"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          layout
+        >
           {data.map((product) => (
-            <ProductCard key={product.id} product={product} onAddToCart={handleAddToCart} />
+            <motion.div key={product.id} variants={cardVariants} layout>
+              <ProductCard product={product} onAddToCart={handleAddToCart} />
+            </motion.div>
           ))}
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </section>
   )
 }
