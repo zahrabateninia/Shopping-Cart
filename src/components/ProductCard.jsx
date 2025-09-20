@@ -11,13 +11,13 @@ export default function ProductCard({ product, onAddToCart }) {
 
   return (
     <article className="max-w-xs w-full bg-white rounded-xl  border-gray-700 shadow-sm  transition-transform transform hover:-translate-y-1 overflow-hidden">
-      <div className="w-full h-52 bg-gray-100 overflow-hidden">
+      <div className="relative h-52 bg-gray-100 m-4">
         {imageSrc ? (
           <img
             src={imageSrc}
             alt={product.title || "Product image"}
             loading="lazy"
-            className="w-full h-full object-cover p-4"
+            className="absolute w-full h-full object-cover rounded-xl"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-gray-400">
@@ -31,7 +31,7 @@ export default function ProductCard({ product, onAddToCart }) {
           {product.title}
         </h3>
 
-        <p className="text-sm text-gray-400 line-clamp-2" aria-hidden>
+        <p className="text-sm font-thin  line-clamp-2" aria-hidden>
           {product.description ? product.description.slice(0, 40) + (product.description.length > 40 ? "…" : "") : ""}
         </p>
 
