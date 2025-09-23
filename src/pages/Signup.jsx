@@ -1,34 +1,21 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate, useLocation, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { setUser } from "@/features/auth/authSlice";
 
-export default function Login() {
+export default function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
 
-  const from = location.state?.from?.pathname || "/";
-
-  const handleEmailLogin = async (e) => {
+  const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      // const userCred = await signInWithEmailAndPassword(auth, email, password);
+      // const userCred = await createUserWithEmailAndPassword(auth, email, password);
       dispatch(setUser(userCred.user));
-      navigate(from, { replace: true });
-    } catch (err) {
-      setError(err.message);
-    }
-  };
-
-  const handleGoogleLogin = async () => {
-    try {
-      // const userCred = await signInWithPopup(auth, googleProvider);
-      dispatch(setUser(userCred.user));
-      navigate(from, { replace: true });
+      navigate("/", { replace: true });
     } catch (err) {
       setError(err.message);
     }
@@ -37,10 +24,10 @@ export default function Login() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50">
       <form
-        // onSubmit={handleEmailLogin}
+        onSubmit={handleSignup}
         className="bg-white p-8 rounded-xl shadow-md w-full max-w-md"
       >
-        <h1 className="text-2xl font-bold mb-6 text-center">Login</h1>
+        <h1 className="text-2xl font-bold mb-6 text-center">Sign Up</h1>
 
         {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
 
@@ -49,7 +36,7 @@ export default function Login() {
           <input
             type="email"
             value={email}
-            // onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
             className="mt-1 w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500"
             required
           />
@@ -60,7 +47,7 @@ export default function Login() {
           <input
             type="password"
             value={password}
-            // onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
             className="mt-1 w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500"
             required
           />
@@ -68,25 +55,10 @@ export default function Login() {
 
         <button
           type="submit"
-          className="w-full bg-indigo-600 text-white py-2 rounded-lg font-medium hover:bg-indigo-700 transition"
+          className="w-full bg-green-600 text-white py-2 rounded-lg font-medium hover:bg-green-700 transition"
         >
-          Login
+          Sign Up
         </button>
-
-        <button
-          type="button"
-          // onClick={handleGoogleLogin}
-          className="w-full mt-3 bg-pink-500 text-white py-2 rounded-lg font-medium hover:bg-red-600 transition"
-        >
-          Continue with Google
-        </button>
-
-        <p className="mt-4 text-sm text-center">
-          Don’t have an account?{" "}
-          <Link to="/signup" className="text-indigo-600 hover:underline">
-            Sign Up
-          </Link>
-        </p>
       </form>
     </div>
   );
