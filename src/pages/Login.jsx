@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { login } from "@/features/auth/authSlice";
 import { useNavigate, useLocation } from "react-router-dom";
+import toast from "react-hot-toast";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -19,9 +20,11 @@ export default function Login() {
     e.preventDefault();
     try {
       dispatch(login({ email, password }));
+      toast.success("Logged in successfully!");
       navigate(from, { replace: true });
     } catch (err) {
       setError(err.message);
+      toast.error("Logged in failed. Please try again!")
     }
   };
 

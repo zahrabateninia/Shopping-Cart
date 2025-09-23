@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { signup } from "@/features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+
 
 export default function Signup() {
   const [username, setUsername] = useState("");
@@ -16,9 +18,12 @@ export default function Signup() {
     e.preventDefault();
     try {
       dispatch(signup({ username, email, password }));
+      toast.success("Account created successfully!")
       navigate("/"); // redirect to home or cart
     } catch (err) {
       setError(err.message);
+      toast.error("Sign up failed.");
+
     }
   };
 
