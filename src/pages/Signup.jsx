@@ -1,21 +1,22 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
+import { signup } from "@/features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
-import { setUser } from "@/features/auth/authSlice";
 
 export default function Signup() {
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleSignup = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     try {
-      // const userCred = await createUserWithEmailAndPassword(auth, email, password);
-      dispatch(setUser(userCred.user));
-      navigate("/", { replace: true });
+      dispatch(signup({ username, email, password }));
+      navigate("/"); // redirect to home or cart
     } catch (err) {
       setError(err.message);
     }
@@ -24,12 +25,23 @@ export default function Signup() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50">
       <form
-        onSubmit={handleSignup}
+        onSubmit={handleSubmit}
         className="bg-white p-8 rounded-xl shadow-md w-full max-w-md"
       >
         <h1 className="text-2xl font-bold mb-6 text-center">Sign Up</h1>
 
-        {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+        {error && <p className="mb-4 text-red-600">{error}</p>}
+
+        <label className="block mb-4">
+          <span className="text-gray-700">Username</span>
+          <input
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            className="mt-1 w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            required
+          />
+        </label>
 
         <label className="block mb-4">
           <span className="text-gray-700">Email</span>
@@ -37,7 +49,7 @@ export default function Signup() {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="mt-1 w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500"
+            className="mt-1 w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
             required
           />
         </label>
@@ -48,17 +60,28 @@ export default function Signup() {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="mt-1 w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500"
+            className="mt-1 w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
             required
           />
         </label>
 
         <button
           type="submit"
-          className="w-full bg-green-600 text-white py-2 rounded-lg font-medium hover:bg-green-700 transition"
+          className="w-full bg-amber-700 text-white py-2 rounded-lg font-medium hover:bg-indigo-700 transition"
         >
           Sign Up
         </button>
+
+        <p className="mt-4 text-center text-sm">
+          Already have an account?{" "}
+          <button
+            type="button"
+            onClick={() => navigate("/login")}
+            className="text-indigo-600 hover:underline"
+          >
+            Login
+          </button>
+        </p>
       </form>
     </div>
   );
