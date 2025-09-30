@@ -5,7 +5,7 @@ function makeItemSnapshot(product, quantity = 1) {
       id: String(product.id),
       title: product.title,
       priceCents: Math.round(product.price * 100), // store price in cents
-      image: product.images[0] || null,
+      image: product.image|| null,
       quantity: Number(quantity) || 1,
     }
   }
@@ -25,10 +25,12 @@ const cartSlice = createSlice({
         const id = String(product.id)
         if (state.itemsById[id]) {
           state.itemsById[id].quantity += Number(quantity)
+          console.log('add to item reducer if statement')
         } else {
           const snapshot = makeItemSnapshot(product, quantity)
           state.itemsById[id] = snapshot
           state.ids.push(id)
+          console.log('add to item reducer else statement')
         }
       },
   

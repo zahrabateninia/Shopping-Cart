@@ -1,7 +1,7 @@
 import React from "react"
 
 export default function ProductCard({ product, onAddToCart }) {
-  const imageSrc = product?.images?.[0] || null
+  const imageSrc = product?.image || null
 
   const formatPrice = (value) =>
     new Intl.NumberFormat("en-US", {

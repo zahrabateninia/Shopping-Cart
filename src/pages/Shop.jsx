@@ -1,18 +1,18 @@
 import { useQuery } from "@tanstack/react-query"
 import ProductCard from "@/components/ProductCard"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { addItem } from "@/features/cart/cartSlice"
+import { selectIsLoggedIn } from "@/features/auth/authSlice"
 import { fetchProducts } from "@/lib/api"
 import ProductCardSkeleton from "@/components/ProductCardSkeleton"
 import { motion } from "framer-motion"
+import { useNavigate } from "react-router-dom"
 
 const containerVariants = {
   hidden: { opacity: 1 },
   visible: {
     opacity: 1,
-    transition: {
-      staggerChildren: 0.15,
-    },
+    transition: { staggerChildren: 0.15 },
   },
 }
 
@@ -27,8 +27,17 @@ export default function Shop() {
     queryFn: fetchProducts,
   })
 
+  const isLoggedIn = useSelector(selectIsLoggedIn)
   const dispatch = useDispatch()
-  const handleAddToCart = (product) => dispatch(addItem({ product, quantity: 1 }))
+  const navigate = useNavigate()
+
+  const handleAddToCart = (product) => {
+    if (!isLoggedIn) {
+      navigate("/login", { state: { from: { pathname: "/shop" } } })
+      return
+    }
+    dispatch(addItem({ product, quantity: 1 }))
+  }
 
   if (isPending) {
     return (

@@ -3,6 +3,8 @@ import { useSelector, useDispatch } from "react-redux"
 import { selectCartTotalQuantity } from "@/features/cart/cartSlice"
 import { logout } from "@/features/auth/authSlice"
 import React from "react"
+import toast from "react-hot-toast";
+
 
 const Navbar = () => {
   const totalItems = useSelector(selectCartTotalQuantity)
@@ -13,6 +15,7 @@ const Navbar = () => {
   const handleLogout = () => {
     dispatch(logout())
     navigate("/") // redirect to home after logout
+    toast.success("You are logout!")
   }
 
   return (
