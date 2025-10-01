@@ -3,8 +3,8 @@ import { useSelector, useDispatch } from "react-redux"
 import { selectCartTotalQuantity } from "@/features/cart/cartSlice"
 import { performLogout } from "@/features/auth/authSlice"
 import React from "react"
-import toast from "react-hot-toast";
-
+import toast from "react-hot-toast"
+import { FaShoppingCart } from "react-icons/fa"
 
 const Navbar = () => {
   const totalItems = useSelector(selectCartTotalQuantity)
@@ -28,10 +28,25 @@ const Navbar = () => {
     >
       <h1 className="font-bold">Logo</h1>
 
-      <div className="flex gap-4">
+      <div className="flex gap-6 items-center">
         <Link to="/">Home</Link>
         <Link to="/shop">Shop</Link>
-        <Link to="/cart">Cart ({totalItems})</Link>
+
+        {/* Cart Icon with badge */}
+        <Link to="/cart" className="relative flex items-center">
+          <FaShoppingCart size={22} />
+          {totalItems > 0 && (
+            <span
+              className="
+                absolute -top-2 -right-2
+                bg-red-600 text-white text-xs font-bold
+                rounded-full w-4 h-4 flex items-center justify-center
+              "
+            >
+              {totalItems}
+            </span>
+          )}
+        </Link>
       </div>
 
       {isLoggedIn ? (
