@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 import { selectCartTotalQuantity } from "@/features/cart/cartSlice"
-import { logout } from "@/features/auth/authSlice"
+import { performLogout } from "@/features/auth/authSlice"
 import React from "react"
 import toast from "react-hot-toast";
 
@@ -13,7 +13,7 @@ const Navbar = () => {
   const navigate = useNavigate()
 
   const handleLogout = () => {
-    dispatch(logout())
+    dispatch(performLogout())
     navigate("/") // redirect to home after logout
     toast.success("You are logout!")
   }

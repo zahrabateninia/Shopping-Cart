@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { login } from "@/features/auth/authSlice";
+import { performLogin } from "@/features/auth/authSlice";
 import { useNavigate, useLocation } from "react-router-dom";
 import toast from "react-hot-toast";
 
@@ -19,7 +19,7 @@ export default function Login() {
   const handleSubmit = (e) => {
     e.preventDefault();
     try {
-      dispatch(login({ email, password }));
+      dispatch(performLogin({ email, password }));
       toast.success("Logged in successfully!");
       navigate(from, { replace: true });
     } catch (err) {

@@ -1,4 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
+import {
+  clearCart,
+  hydrateCart,
+  saveCartForUser,
+  loadCartForUser,
+} from "../cart/cartSlice";
 
 const initialState = {
   isLoggedIn: false,
@@ -19,12 +25,17 @@ const authSlice = createSlice({
 
       const newUser = { email, username, password };
       users.push(newUser);
+
       localStorage.setItem("users", JSON.stringify(users));
       localStorage.setItem("user", JSON.stringify(newUser));
+
+      // Start with empty cart when the user signs up
+      localStorage.setItem(`cart_${email}`, JSON.stringify({ itemsById: {}, ids: [] }));
 
       state.isLoggedIn = true;
       state.user = newUser;
     },
+
     login: (state, action) => {
       const { email, password } = action.payload;
       const users = JSON.parse(localStorage.getItem("users") || "[]");
@@ -40,11 +51,13 @@ const authSlice = createSlice({
       state.isLoggedIn = true;
       state.user = existingUser;
     },
+
     logout: (state) => {
       localStorage.removeItem("user");
       state.isLoggedIn = false;
       state.user = null;
     },
+
     loadUserFromStorage: (state) => {
       const storedUser = localStorage.getItem("user");
       if (storedUser) {
@@ -56,6 +69,29 @@ const authSlice = createSlice({
 });
 
 export const { signup, login, logout, loadUserFromStorage } = authSlice.actions;
+
+export const performLogin = (credentials) => (dispatch) => {
+  dispatch(login(credentials));
+
+  const user = JSON.parse(localStorage.getItem("user"));
+  if (user) {
+    const savedCart = loadCartForUser(user.email);
+    dispatch(hydrateCart(savedCart));
+  }
+};
+
+export const performLogout = () => (dispatch, getState) => {
+  const { auth, cart } = getState();
+
+  if (auth.user) {
+    saveCartForUser(auth.user.email, cart);
+  }
+
+  dispatch(logout());
+  dispatch(clearCart());
+};
+
 export default authSlice.reducer;
+
 export const selectIsLoggedIn = (state) => state.auth.isLoggedIn;
 export const selectUser = (state) => state.auth.user;
