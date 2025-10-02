@@ -28,7 +28,7 @@ const Navbar = () => {
       "
     >
       <Link to="/" className="text-2xl font-extrabold tracking-wide text-gray-900 hover:text-indigo-600 transition-colors">
-        🛒 ShopEase
+        ShopEase
       </Link>
 
       <div className="flex gap-8 items-center text-gray-700 font-medium">
