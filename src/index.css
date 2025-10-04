@@ -1,1 +1,71 @@
 @import "tailwindcss";
+
+@import "tailwindcss";
+
+@theme {
+  --color-base-dark-950: #0b0f16; 
+  --color-base-dark-900: #111827;
+  --color-base-dark-800: #1F2937;
+  --color-base-dark-700: #374151;
+  --color-base-dark-600: #4B5563;
+  --color-base-dark-500: #6B7280;
+  --color-base-dark-400: #9CA3AF;
+  --color-base-dark-300: #D1D5DB;
+  --color-base-dark-200: #E5E7EB;
+  --color-base-dark-100: #F3F4F6;
+
+
+  --color-accent-primary-DEFAULT: #20C997;
+  --color-accent-primary-dark: #0D9488;
+  --color-accent-primary-light: #5EEAD4;
+  --color-accent-primary-100: #A7F3D0;
+  --color-accent-primary-hover: #34D399; /* hover for buttons & links */
+  --color-accent-primary-border: #2DD4BF; /* borders and outlines */
+  --color-accent-primary-shadow: rgba(32, 201, 151, 0.4); /* glowing teal shadow */
+  --color-accent-primary-gradient: linear-gradient(
+    90deg,
+    var(--color-accent-primary-light),
+    var(--color-accent-primary-DEFAULT)
+  );
+
+
+  --color-accent-secondary-DEFAULT: #EC4899;
+  --color-accent-secondary-dark: #DB2777;
+  --color-accent-secondary-light: #F472B6;
+  --color-accent-secondary-hover: #E879F9;
+  --color-accent-secondary-gradient: linear-gradient(
+    90deg,
+    var(--color-accent-secondary-light),
+    var(--color-accent-secondary-DEFAULT)
+  );
+
+  
+  --color-accent-tertiary-DEFAULT: #4F46E5;
+  --color-accent-tertiary-light: #818CF8;
+  --color-accent-tertiary-dark: #3730A3;
+  --color-accent-tertiary-gradient: linear-gradient(
+    90deg,
+    var(--color-accent-tertiary-light),
+    var(--color-accent-tertiary-DEFAULT)
+  );
+
+  /* effects */
+  --shadow-accent-glow: 0 0 25px var(--color-accent-primary-shadow);
+  --shadow-accent-strong: 0 0 40px var(--color-accent-secondary-DEFAULT);
+  --gradient-brand:
+    linear-gradient(
+      90deg,
+      var(--color-accent-primary-light),
+      var(--color-accent-secondary-DEFAULT)
+    );
+  --gradient-brand-reverse:
+    linear-gradient(
+      90deg,
+      var(--color-accent-secondary-light),
+      var(--color-accent-primary-DEFAULT)
+    );
+
+  --transition-fast: 150ms ease;
+  --transition-normal: 300ms ease;
+  --transition-slow: 500ms ease;
+}

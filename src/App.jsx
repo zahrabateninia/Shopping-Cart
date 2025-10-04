@@ -9,6 +9,7 @@ import Shop from "@/pages/Shop";
 import Cart from "@/pages/Cart";
 import Login from "@/pages/Login";
 import Signup from "@/pages/Signup";
+import Footer from "@/components/Footer"
 import { Toaster } from "react-hot-toast";
 
 export default function App() {
@@ -21,7 +22,7 @@ export default function App() {
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
-      <main className="flex-1 p-4 overflow-auto">
+      <main className="flex-1  overflow-auto">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/shop" element={<Shop />} />
@@ -30,6 +31,7 @@ export default function App() {
             <Route path="/signup" element={<Signup />} />
         </Routes>
       </main>
+      <Footer/>
       <Toaster position="top-right" reverseOrder={false} />
     </div>
   );

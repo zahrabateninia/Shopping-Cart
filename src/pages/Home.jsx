@@ -19,7 +19,12 @@ const AnimatedTag = ({ children, delay }) => {
   return (
     <span
       ref={tagRef}
-      className="inline-block px-3 py-1 bg-teal-500/10 text-teal-300 text-sm font-medium rounded-full border border-teal-500/30 mr-2 mb-2 transition-all hover:bg-teal-500/20 opacity-0 translate-y-5"
+      className="inline-block px-3 py-1 text-sm font-medium rounded-full mr-2 mb-2 transition-all opacity-0 translate-y-5"
+      style={{
+        backgroundColor: "color-mix(in srgb, var(--color-accent-primary-light) 10%, transparent)",
+        color: "var(--color-accent-primary-light)",
+        border: "1px solid color-mix(in srgb, var(--color-accent-primary-light) 30%, transparent)",
+      }}
     >
       {children}
     </span>
@@ -52,11 +57,27 @@ export default function Home() {
   ];
 
   return (
-    <div ref={mainRef} className="relative bg-gray-900 text-white font-inter overflow-hidden">
+    <div
+      ref={mainRef}
+      className="relative font-inter overflow-hidden"
+      style={{
+        backgroundColor: "var(--color-base-dark-900)",
+        color: "var(--color-base-dark-300)",
+      }}
+    >
       {/* Background Blobs */}
-      <div className="absolute top-0 left-0 w-80 h-80 bg-fuchsia-600 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
-      <div className="absolute top-0 right-0 w-80 h-80 bg-teal-600 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
-      <div className="absolute bottom-10 left-1/4 w-80 h-80 bg-indigo-600 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-4000"></div>
+      <div
+        className="absolute top-0 left-0 w-80 h-80 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"
+        style={{ backgroundColor: "var(--color-accent-secondary-DEFAULT)" }}
+      ></div>
+      <div
+        className="absolute top-0 right-0 w-80 h-80 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"
+        style={{ backgroundColor: "var(--color-accent-primary-dark)" }}
+      ></div>
+      <div
+        className="absolute bottom-10 left-1/4 w-80 h-80 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-4000"
+        style={{ backgroundColor: "var(--color-accent-tertiary-DEFAULT)" }}
+      ></div>
 
       <style>{`
         @keyframes blob {
@@ -71,10 +92,13 @@ export default function Home() {
 
       {/* Hero Section */}
       <section
-        className="relative z-10 flex flex-col justify-center items-center text-center px-4 md:px-16"
-        style={{ minHeight: "calc(100vh - 64px)" }} // adjust if Navbar height changes
+        className="relative z-10 flex flex-col justify-center items-center text-center px-4"
+        style={{
+          minHeight: "calc(100vh - 64px)", // Navbar height adjustment
+        }}
       >
         <div className="max-w-4xl">
+
           <div className="mb-6">
             <AnimatedTag delay={0.3}>New Arrivals</AnimatedTag>
             <AnimatedTag delay={0.4}>2025 Collection</AnimatedTag>
@@ -83,23 +107,43 @@ export default function Home() {
 
           <h1
             ref={titleRef}
-            className="opacity-0 translate-y-10 text-6xl md:text-8xl font-extrabold mb-4 tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-fuchsia-500"
+            className="opacity-0 translate-y-10 text-6xl md:text-8xl font-extrabold mb-4 tracking-tighter text-transparent bg-clip-text"
+            style={{
+              backgroundImage: "var(--gradient-brand)",
+            }}
           >
             Elevate Your Everyday.
           </h1>
 
           <p
             ref={subtitleRef}
-            className="opacity-0 translate-y-10 text-xl md:text-2xl text-gray-300 mb-10 max-w-3xl mx-auto leading-relaxed"
+            className="opacity-0 translate-y-10 text-xl md:text-2xl mb-10 max-w-3xl mx-auto leading-relaxed"
+            style={{
+              color: "var(--color-base-dark-300)",
+            }}
           >
             Discover the highest quality goods and essentials, curated for modern
             design and lasting durability. Your perfect find is waiting.
           </p>
 
+          {/* CTA Button */}
           <Link
             ref={buttonRef}
             to="/shop"
-            className="opacity-0 scale-90 translate-y-5 group inline-flex items-center justify-center bg-teal-500 hover:bg-teal-400 text-gray-900 font-bold px-8 py-4 rounded-full shadow-2xl shadow-teal-500/50 transition-all duration-300 text-lg"
+            className="opacity-0 scale-90 translate-y-5 group inline-flex items-center justify-center font-bold px-8 py-4 rounded-full transition-all duration-300 text-lg"
+            style={{
+              backgroundColor: "var(--color-accent-primary-DEFAULT)",
+              color: "var(--color-base-dark-900)",
+              boxShadow: "0 0 20px var(--color-accent-primary-shadow)",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor =
+                "var(--color-accent-primary-hover)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor =
+                "var(--color-accent-primary-DEFAULT)";
+            }}
           >
             <svg
               className="w-6 h-6 mr-2 transition-transform group-hover:rotate-12"
@@ -119,24 +163,57 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="relative z-10 bg-gray-900 py-20 px-4 md:px-16 border-t border-gray-800">
+      <section
+        className="relative z-10 py-20 px-4 md:px-16 border-t"
+        style={{
+          backgroundColor: "var(--color-base-dark-900)",
+          borderColor: "var(--color-base-dark-800)",
+        }}
+      >
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-4xl md:text-5xl font-extrabold text-center mb-16 bg-clip-text text-transparent bg-gradient-to-r from-teal-400 to-fuchsia-500 tracking-tight">
+          <h2
+            className="text-4xl md:text-5xl font-extrabold text-center mb-16 tracking-tight text-transparent bg-clip-text"
+            style={{
+              backgroundImage: "var(--gradient-brand)",
+            }}
+          >
             Why Shop With Us?
           </h2>
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {features.map((feature, i) => (
               <div
                 key={i}
                 ref={(el) => (featureRefs.current[i] = el)}
-                className="opacity-0 translate-y-10 p-8 bg-gray-800 rounded-2xl shadow-xl border border-gray-700 hover:border-teal-500 transition-all duration-300 hover:translate-y-[-5px] text-center"
+                className="opacity-0 translate-y-10 p-8 rounded-2xl shadow-xl transition-all duration-300 text-center"
+                style={{
+                  backgroundColor: "var(--color-base-dark-800)",
+                  border: "1px solid var(--color-base-dark-700)",
+                }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.border =
+                    "1px solid var(--color-accent-primary-border)")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.border =
+                    "1px solid var(--color-base-dark-700)")
+                }
               >
-                <div className="text-4xl mb-4">{feature.icon}</div>
-                <h3 className="text-2xl font-semibold mb-3 text-teal-300">
+                <div
+                  className="text-4xl mb-4"
+                  style={{ color: "var(--color-accent-primary-light)" }}
+                >
+                  {feature.icon}
+                </div>
+                <h3
+                  className="text-2xl font-semibold mb-3"
+                  style={{ color: "var(--color-accent-primary-300)" }}
+                >
                   {feature.title}
                 </h3>
-                <p className="text-gray-400">{feature.description}</p>
+                <p style={{ color: "var(--color-base-dark-400)" }}>
+                  {feature.description}
+                </p>
               </div>
             ))}
           </div>
