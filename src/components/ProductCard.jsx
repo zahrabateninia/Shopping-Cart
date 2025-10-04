@@ -6,9 +6,13 @@ import {
   decreaseQuantity,
   selectCartItemsArray,
 } from "@/features/cart/cartSlice";
+import { selectIsLoggedIn } from "@/features/auth/authSlice";
+import { useNavigate } from "react-router-dom";
 
 export default function ProductCard({ product }) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const isLoggedIn = useSelector(selectIsLoggedIn);
   const cartItems = useSelector(selectCartItemsArray);
   const cartItem = cartItems.find((item) => item.id === String(product.id));
 
@@ -19,6 +23,10 @@ export default function ProductCard({ product }) {
     }).format(Number(value || 0));
 
   const handleAddToCart = () => {
+    if (!isLoggedIn) {
+      navigate("/login", { state: { from: { pathname: "/shop" } } });
+      return;
+    }
     dispatch(addItem({ product, quantity: 1 }));
   };
 
@@ -47,7 +55,7 @@ export default function ProductCard({ product }) {
         borderColor: "var(--color-base-dark-700)",
       }}
     >
-      {/* Image Section */}
+      {/* Image */}
       <div
         className="relative flex-shrink-0 h-48 flex items-center justify-center p-4 overflow-hidden"
         style={{
@@ -88,7 +96,6 @@ export default function ProductCard({ product }) {
             {formatPrice(product.price)}
           </span>
 
-          {/* Cart Controls */}
           {!cartItem ? (
             <button
               onClick={handleAddToCart}
@@ -125,24 +132,15 @@ export default function ProductCard({ product }) {
                   borderColor: "var(--color-base-dark-700)",
                   color: "var(--color-base-dark-300)",
                 }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor =
-                    "var(--color-base-dark-700)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = "transparent";
-                }}
               >
                 −
               </button>
-
               <span
                 className="text-sm font-semibold"
                 style={{ color: "var(--color-accent-primary-light)" }}
               >
                 {cartItem.quantity}
               </span>
-
               <button
                 onClick={handleIncrease}
                 className="
@@ -152,13 +150,6 @@ export default function ProductCard({ product }) {
                 style={{
                   borderColor: "var(--color-base-dark-700)",
                   color: "var(--color-base-dark-300)",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor =
-                    "var(--color-base-dark-700)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = "transparent";
                 }}
               >
                 +

@@ -1,7 +1,5 @@
 @import "tailwindcss";
 
-@import "tailwindcss";
-
 @theme {
   --color-base-dark-950: #0b0f16; 
   --color-base-dark-900: #111827;
@@ -68,4 +66,16 @@
   --transition-fast: 150ms ease;
   --transition-normal: 300ms ease;
   --transition-slow: 500ms ease;
+}
+
+
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px var(--color-base-dark-900) inset;
+  -webkit-text-fill-color: var(--color-base-dark-300);
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0px 1000px var(--color-base-dark-900) inset;
+  -webkit-text-fill-color: var(--color-base-dark-300);
 }

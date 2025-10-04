@@ -51,9 +51,9 @@ export default function Home() {
   );
 
   const features = [
-    { title: "Curated Style", icon: "✨", description: "Hand-picked items for modern living." },
-    { title: "Seamless Checkout", icon: "💳", description: "Fast, secure, and stress-free payments." },
-    { title: "24/7 Support", icon: "💬", description: "We're here to help you every step of the way." },
+    { title: "Curated Style", description: "Hand-picked items for modern living." },
+    { title: "Seamless Checkout", description: "Fast, secure, and stress-free payments." },
+    { title: "24/7 Support", description: "We're here to help you every step of the way." },
   ];
 
   return (
