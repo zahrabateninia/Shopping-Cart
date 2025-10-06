@@ -78,7 +78,6 @@ export default function Shop() {
         color: "var(--color-base-dark-300)",
       }}
     >
-      {/* Header */}
       <div className="text-center mb-12">
         <h1
           className="text-5xl font-extrabold tracking-tight mb-3 bg-clip-text text-transparent"
@@ -92,7 +91,7 @@ export default function Shop() {
           className="text-lg max-w-2xl mx-auto"
           style={{ color: "var(--color-base-dark-400)" }}
         >
-          Explore a curated selection of products chosen for quality,
+          Explore a great selection of products chosen for quality,
           craftsmanship, and modern style.
         </p>
       </div>

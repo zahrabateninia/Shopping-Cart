@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   addItem,
@@ -10,6 +10,9 @@ import { selectIsLoggedIn } from "@/features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
 
 export default function ProductCard({ product }) {
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
+  
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isLoggedIn = useSelector(selectIsLoggedIn);
@@ -62,24 +65,56 @@ export default function ProductCard({ product }) {
           backgroundColor: "var(--color-base-dark-900)",
         }}
       >
-        {imageSrc ? (
+        {/* Skeleton Loader */}
+        {!imageLoaded && !imageError && imageSrc && (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div
+              className="w-full h-full animate-pulse"
+              style={{
+                backgroundColor: "var(--color-base-dark-800)",
+              }}
+            >
+              <div className="w-full h-full flex items-center justify-center">
+                <div
+                  className="w-16 h-16 rounded-full border-4 border-t-transparent animate-spin"
+                  style={{
+                    borderColor: "var(--color-base-dark-700)",
+                    borderTopColor: "transparent",
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Actual Image */}
+        {imageSrc && !imageError ? (
           <img
             src={imageSrc}
             alt={product.title || "Product image"}
             loading="lazy"
-            className="max-h-full max-w-full object-contain transition-transform duration-500 hover:scale-105"
+            className={`
+              max-h-full max-w-full object-contain 
+              transition-all duration-500
+              ${imageLoaded ? "opacity-100 scale-100" : "opacity-0 scale-95"}
+              hover:scale-105
+            `}
+            onLoad={() => setImageLoaded(true)}
+            onError={() => {
+              setImageError(true);
+              setImageLoaded(false);
+            }}
           />
         ) : (
           <div
             className="w-full h-full flex items-center justify-center text-sm"
             style={{ color: "var(--color-base-dark-400)" }}
           >
-            No image
+            No image available
           </div>
         )}
       </div>
 
-      {/* Content */}
       <div className="flex flex-col flex-1 p-6">
         <h3
           className="font-semibold leading-tight line-clamp-2 mb-3"
@@ -101,7 +136,7 @@ export default function ProductCard({ product }) {
               onClick={handleAddToCart}
               className="
                 ml-2 px-3 py-2 rounded-lg text-sm font-semibold
-                transition-all border-2
+                transition-all border-2 hover:scale-105
               "
               style={{
                 color: "var(--color-accent-primary-light)",
@@ -127,16 +162,24 @@ export default function ProductCard({ product }) {
                 className="
                   w-8 h-8 flex items-center justify-center
                   rounded-lg text-lg font-bold transition-all border
+                  hover:scale-110
                 "
                 style={{
                   borderColor: "var(--color-base-dark-700)",
                   color: "var(--color-base-dark-300)",
                 }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor =
+                    "var(--color-base-dark-700)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = "transparent";
+                }}
               >
                 −
               </button>
               <span
-                className="text-sm font-semibold"
+                className="text-sm font-semibold min-w-[24px] text-center"
                 style={{ color: "var(--color-accent-primary-light)" }}
               >
                 {cartItem.quantity}
@@ -146,10 +189,18 @@ export default function ProductCard({ product }) {
                 className="
                   w-8 h-8 flex items-center justify-center
                   rounded-lg text-lg font-bold transition-all border
+                  hover:scale-110
                 "
                 style={{
                   borderColor: "var(--color-base-dark-700)",
                   color: "var(--color-base-dark-300)",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor =
+                    "var(--color-base-dark-700)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = "transparent";
                 }}
               >
                 +
