@@ -130,7 +130,7 @@ export default function Home() {
           <Link
             ref={buttonRef}
             to="/shop"
-            className="opacity-0 scale-90 translate-y-5 group inline-flex items-center justify-center font-bold px-8 py-4 rounded-full transition-all duration-300 text-lg"
+            className="opacity-0 scale-90 translate-y-5 group inline-flex items-center justify-center font-bold  px-8 py-4 rounded-full transition-all duration-300 text-lg"
             style={{
               backgroundColor: "var(--color-accent-primary-DEFAULT)",
               color: "var(--color-base-dark-900)",
