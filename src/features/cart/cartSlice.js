@@ -1,9 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { createSelector } from "reselect"; // Import createSelector for memoization
 
 function makeItemSnapshot(product, quantity = 1) {
   return {
     id: String(product.id),
     title: product.title,
+    // Ensure this property exists on the item snapshot
     priceCents: Math.round(product.price * 100), // store price in cents
     image: product.image || null,
     quantity: Number(quantity) || 1,
@@ -81,25 +83,40 @@ export const {
 
 export default cartSlice.reducer;
 
-export const selectCartItemsArray = (state) =>
-  state.cart.ids.map((id) => state.cart.itemsById[id]);
+// Input selectors (non-memoized)
+const selectCartIds = (state) => state.cart.ids;
+const selectItemsById = (state) => state.cart.itemsById;
 
-export const selectCartTotalQuantity = (state) =>
-  selectCartItemsArray(state).reduce((acc, item) => acc + item.quantity, 0);
+// Memoized selector for cart items array (fixes the rerender warning)
+export const selectCartItemsArray = createSelector(
+  [selectCartIds, selectItemsById],
+  (ids, itemsById) => {
+    // This transformation only runs if ids or itemsById change reference
+    return ids.map((id) => itemsById[id]);
+  }
+);
 
-export const selectCartTotalCents = (state) =>
-  selectCartItemsArray(state).reduce(
-    (acc, item) => acc + item.quantity * item.priceCents,
-    0
-  );
+// Memoized selectors relying on selectCartItemsArray
+export const selectCartTotalQuantity = createSelector(
+  [selectCartItemsArray],
+  (cartItems) => cartItems.reduce((acc, item) => acc + item.quantity, 0)
+);
 
-export const selectCartTotalFormatted = (state) => {
-  const cents = selectCartTotalCents(state);
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  }).format(cents / 100);
-};
+export const selectCartTotalCents = createSelector(
+  [selectCartItemsArray],
+  (cartItems) =>
+    cartItems.reduce((acc, item) => acc + item.quantity * item.priceCents, 0)
+);
+
+export const selectCartTotalFormatted = createSelector(
+  [selectCartTotalCents],
+  (cents) => {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+    }).format(cents / 100);
+  }
+);
 
 
 export const saveCartForUser = (email, cartState) => {

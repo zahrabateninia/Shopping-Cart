@@ -140,7 +140,6 @@ const Navbar = () => {
           )}
         </Link>
 
-        {/* Hamburger Menu Button */}
         <button
           className={iconClasses}
           onClick={() => setIsMenuOpen(!isMenuOpen)}

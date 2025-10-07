@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   selectCartItemsArray,
-  selectCartTotalQuantity,
+  selectCartTotalCents,
+  selectCartTotalFormatted,
   increaseQuantity,
   decreaseQuantity,
   removeItem,
@@ -10,6 +11,14 @@ import {
 import { Link } from "react-router-dom";
 import { FaTrash, FaShoppingBag } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
+
+// Helper function to format price from cents
+function formatPrice(cents) {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  }).format(cents / 100);
+}
 
 // Image component with loading state
 function CartItemImage({ src, alt }) {
@@ -66,14 +75,8 @@ function CartItemImage({ src, alt }) {
 
 export default function Cart() {
   const cartItems = useSelector(selectCartItemsArray);
-  const cartTotal = useSelector(selectCartTotalQuantity);
+  const cartTotalCents = useSelector(selectCartTotalCents);
   const dispatch = useDispatch();
-
-  const formatPrice = (value) =>
-    new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-    }).format(Number(value || 0));
 
   const handleIncrease = (id) => {
     dispatch(increaseQuantity(id));
@@ -86,6 +89,10 @@ export default function Cart() {
   const handleRemove = (id) => {
     dispatch(removeItem(id));
   };
+
+  // Calculate tax (10%)
+  const taxCents = Math.round(cartTotalCents * 0.1);
+  const totalWithTaxCents = cartTotalCents + taxCents;
 
   // Empty cart state
   if (cartItems.length === 0) {
@@ -194,7 +201,7 @@ export default function Cart() {
                         className="text-xl font-bold mb-4"
                         style={{ color: "var(--color-accent-primary-light)" }}
                       >
-                        {formatPrice(item.price)}
+                        {formatPrice(item.priceCents)}
                       </p>
 
                       {/* Controls */}
@@ -274,7 +281,7 @@ export default function Cart() {
                             className="text-lg font-bold"
                             style={{ color: "var(--color-accent-primary-light)" }}
                           >
-                            {formatPrice(item.price * item.quantity)}
+                            {formatPrice(item.priceCents * item.quantity)}
                           </span>
                         </div>
                       </div>
@@ -314,7 +321,7 @@ export default function Cart() {
                     className="font-semibold"
                     style={{ color: "var(--color-base-dark-300)" }}
                   >
-                    {formatPrice(cartTotal)}
+                    {formatPrice(cartTotalCents)}
                   </span>
                 </div>
                 <div className="flex justify-between">
@@ -336,7 +343,7 @@ export default function Cart() {
                     className="font-semibold"
                     style={{ color: "var(--color-base-dark-300)" }}
                   >
-                    {formatPrice(cartTotal * 0.1)}
+                    {formatPrice(taxCents)}
                   </span>
                 </div>
               </div>
@@ -356,7 +363,7 @@ export default function Cart() {
                     className="text-2xl font-extrabold"
                     style={{ color: "var(--color-accent-primary-light)" }}
                   >
-                    {formatPrice(cartTotal * 1.1)}
+                    {formatPrice(totalWithTaxCents)}
                   </span>
                 </div>
               </div>
