@@ -18,6 +18,7 @@ export default function ProductCard({ product }) {
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const cartItems = useSelector(selectCartItemsArray);
   const cartItem = cartItems.find((item) => item.id === String(product.id));
+  
 
   const formatPrice = (value) =>
     new Intl.NumberFormat("en-US", {

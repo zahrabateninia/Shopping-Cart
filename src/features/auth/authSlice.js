@@ -2,9 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   clearCart,
   hydrateCart,
-  saveCartForUser,
-  loadCartForUser,
 } from "../cart/cartSlice";
+import { userStorage, cartStorage } from "@/utils/localStorage";
 
 const initialState = {
   isLoggedIn: false,
@@ -17,7 +16,7 @@ const authSlice = createSlice({
   reducers: {
     signup: (state, action) => {
       const { email, password, username } = action.payload;
-      const users = JSON.parse(localStorage.getItem("users") || "[]");
+      const users = userStorage.getAllUsers();
 
       if (users.find((u) => u.email === email)) {
         throw new Error("User already exists");
@@ -25,12 +24,9 @@ const authSlice = createSlice({
 
       const newUser = { email, username, password };
       users.push(newUser);
-
-      localStorage.setItem("users", JSON.stringify(users));
-      localStorage.setItem("user", JSON.stringify(newUser));
-
-      // Start with empty cart when the user signs up
-      localStorage.setItem(`cart_${email}`, JSON.stringify({ itemsById: {}, ids: [] }));
+      userStorage.saveAllUsers(users);
+      userStorage.saveCurrentUser(newUser);
+      cartStorage.saveUserCart(email, { itemsById: {}, ids: [] });
 
       state.isLoggedIn = true;
       state.user = newUser;
@@ -38,31 +34,29 @@ const authSlice = createSlice({
 
     login: (state, action) => {
       const { email, password } = action.payload;
-      const users = JSON.parse(localStorage.getItem("users") || "[]");
+      const users = userStorage.getAllUsers();
       const existingUser = users.find(
         (u) => u.email === email && u.password === password
       );
 
-      if (!existingUser) {
-        throw new Error("Invalid credentials");
-      }
+      if (!existingUser) throw new Error("Invalid credentials");
 
-      localStorage.setItem("user", JSON.stringify(existingUser));
+      userStorage.saveCurrentUser(existingUser);
       state.isLoggedIn = true;
       state.user = existingUser;
     },
 
     logout: (state) => {
-      localStorage.removeItem("user");
+      userStorage.removeCurrentUser();
       state.isLoggedIn = false;
       state.user = null;
     },
 
     loadUserFromStorage: (state) => {
-      const storedUser = localStorage.getItem("user");
+      const storedUser = userStorage.getCurrentUser();
       if (storedUser) {
         state.isLoggedIn = true;
-        state.user = JSON.parse(storedUser);
+        state.user = storedUser;
       }
     },
   },
@@ -70,23 +64,19 @@ const authSlice = createSlice({
 
 export const { signup, login, logout, loadUserFromStorage } = authSlice.actions;
 
+// Async Thunks 
 export const performLogin = (credentials) => (dispatch) => {
   dispatch(login(credentials));
-
-  const user = JSON.parse(localStorage.getItem("user"));
+  const user = userStorage.getCurrentUser();
   if (user) {
-    const savedCart = loadCartForUser(user.email);
+    const savedCart = cartStorage.getUserCart(user.email);
     dispatch(hydrateCart(savedCart));
   }
 };
 
 export const performLogout = () => (dispatch, getState) => {
   const { auth, cart } = getState();
-
-  if (auth.user) {
-    saveCartForUser(auth.user.email, cart);
-  }
-
+  if (auth.user) cartStorage.saveUserCart(auth.user.email, cart);
   dispatch(logout());
   dispatch(clearCart());
 };
