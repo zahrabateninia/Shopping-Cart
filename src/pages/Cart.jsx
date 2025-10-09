@@ -7,6 +7,7 @@ import {
   increaseQuantity,
   decreaseQuantity,
   removeItem,
+  selectCartTotalQuantity,
 } from "@/features/cart/cartSlice";
 import { Link } from "react-router-dom";
 import { FaTrash, FaShoppingBag } from "react-icons/fa";
@@ -75,6 +76,7 @@ function CartItemImage({ src, alt }) {
 
 export default function Cart() {
   const cartItems = useSelector(selectCartItemsArray);
+  const numOfItems = useSelector(selectCartTotalQuantity);
   const cartTotalCents = useSelector(selectCartTotalCents);
   const dispatch = useDispatch();
 
@@ -95,7 +97,7 @@ export default function Cart() {
   const totalWithTaxCents = cartTotalCents + taxCents;
 
   // Empty cart state
-  if (cartItems.length === 0) {
+  if (numOfItems === 0) {
     return (
       <div
         className="min-h-screen flex items-center justify-center"
@@ -163,7 +165,7 @@ export default function Cart() {
             Shopping Cart
           </h1>
           <p style={{ color: "var(--color-base-dark-400)" }}>
-            {cartItems.length} {cartItems.length === 1 ? "item" : "items"} in your cart
+            {numOfItems} {numOfItems === 1 ? "item" : "items"} in your cart
           </p>
         </motion.div>
 
