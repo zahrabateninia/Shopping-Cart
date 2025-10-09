@@ -42,6 +42,7 @@ export default function Signup() {
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: -20, scale: 0.97 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
+          autoComplete="off" 
           onSubmit={handleSubmit}
           className="
             bg-[var(--color-base-dark-800)]
@@ -67,7 +68,6 @@ export default function Signup() {
             </p>
           )}
 
-          {/* Username Field */}
           <label className="block mb-4">
             <span className="text-[var(--color-base-dark-300)] font-medium">
               Username
@@ -75,6 +75,8 @@ export default function Signup() {
             <input
               type="text"
               value={username}
+              name="new-username"
+              autoComplete="new-username"
               onChange={(e) => setUsername(e.target.value)}
               className="
                 mt-1 w-full px-3 py-2 rounded-lg
@@ -89,7 +91,6 @@ export default function Signup() {
             />
           </label>
 
-          {/* Email Field */}
           <label className="block mb-4">
             <span className="text-[var(--color-base-dark-300)] font-medium">
               Email
@@ -97,6 +98,8 @@ export default function Signup() {
             <input
               type="email"
               value={email}
+              name="new-email"
+              autoComplete="new-email"
               onChange={(e) => setEmail(e.target.value)}
               className="
                 mt-1 w-full px-3 py-2 rounded-lg
@@ -111,7 +114,6 @@ export default function Signup() {
             />
           </label>
 
-          {/* Password Field */}
           <label className="block mb-6">
             <span className="text-[var(--color-base-dark-300)] font-medium">
               Password
@@ -119,6 +121,8 @@ export default function Signup() {
             <input
               type="password"
               value={password}
+              name="new-password"
+              autoComplete="new-password"
               onChange={(e) => setPassword(e.target.value)}
               className="
                 mt-1 w-full px-3 py-2 rounded-lg
