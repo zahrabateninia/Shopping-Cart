@@ -19,11 +19,13 @@ const AnimatedTag = ({ children, delay }) => {
   return (
     <span
       ref={tagRef}
-      className="inline-block px-3 py-1 text-sm font-medium rounded-full mr-2 mb-2 transition-all opacity-0 translate-y-5"
+      className="inline-block px-3 py-1 text-sm font-medium rounded-full mr-2 mb-2"
       style={{
         backgroundColor: "color-mix(in srgb, var(--color-accent-primary-light) 10%, transparent)",
         color: "var(--color-accent-primary-light)",
         border: "1px solid color-mix(in srgb, var(--color-accent-primary-light) 30%, transparent)",
+        opacity: 0,
+        transform: "translateY(20px)",
       }}
     >
       {children}
@@ -42,16 +44,29 @@ export default function Home() {
     () => {
       const tl = gsap.timeline({ defaults: { duration: 1, ease: "power4.out" } });
 
-      tl.to(titleRef.current, { opacity: 1, y: 0 })
-        .to(subtitleRef.current, { opacity: 1, y: 0 }, "-=0.6")
-        .to(buttonRef.current, { opacity: 1, scale: 1, y: 0 }, "-=0.5")
-        .to(featureRefs.current, { opacity: 1, y: 0, stagger: 0.2 }, "-=0.3");
+      tl.to(titleRef.current, { 
+        opacity: 1, 
+        y: 0,
+      })
+        .to(subtitleRef.current, { 
+          opacity: 1, 
+          y: 0,
+        }, "-=0.6")
+        .to(buttonRef.current, { 
+          opacity: 1, 
+          y: 0,
+        }, "-=0.5")
+        .to(featureRefs.current, { 
+          opacity: 1, 
+          y: 0, 
+          stagger: 0.2,
+        }, "-=0.3");
     },
     { scope: mainRef }
   );
 
   const features = [
-    { title: "Curated Style", description: "Hand-picked items for modern living." },
+    { title: "Amazing Style", description: "Hand-picked items for modern living." },
     { title: "Seamless Checkout", description: "Fast, secure, and stress-free payments." },
     { title: "24/7 Support", description: "We're here to help you every step of the way." },
   ];
@@ -107,9 +122,11 @@ export default function Home() {
 
           <h1
             ref={titleRef}
-            className="opacity-0 translate-y-10 text-6xl md:text-8xl font-extrabold mb-4 tracking-tighter text-transparent bg-clip-text"
+            className="text-6xl md:text-8xl font-extrabold mb-4 tracking-tighter text-transparent bg-clip-text"
             style={{
               backgroundImage: "var(--gradient-brand)",
+              opacity: 0,
+              transform: "translateY(40px)",
             }}
           >
             Elevate Your Everyday.
@@ -117,32 +134,37 @@ export default function Home() {
 
           <p
             ref={subtitleRef}
-            className="opacity-0 translate-y-10 text-xl md:text-2xl mb-10 max-w-3xl mx-auto leading-relaxed"
+            className="text-xl md:text-2xl mb-10 max-w-3xl mx-auto leading-relaxed"
             style={{
               color: "var(--color-base-dark-300)",
+              opacity: 0,
+              transform: "translateY(40px)",
             }}
           >
             Discover the highest quality goods and essentials, curated for modern
             design and lasting durability. Your perfect find is waiting.
           </p>
 
-          {/* CTA Button */}
+          {/* CTA Button - Fixed lag issues */}
           <Link
             ref={buttonRef}
             to="/shop"
-            className="opacity-0 scale-90 translate-y-5 group inline-flex items-center justify-center font-bold  px-8 py-4 rounded-full transition-all duration-300 text-lg"
+            className="group inline-flex items-center justify-center font-bold px-8 py-4 rounded-full text-lg"
             style={{
               backgroundColor: "var(--color-accent-primary-DEFAULT)",
               color: "var(--color-base-dark-900)",
               boxShadow: "0 0 20px var(--color-accent-primary-shadow)",
+              transition: "background-color 0.3s ease, box-shadow 0.3s ease",
+              opacity: 0,
+              transform: "translateY(20px)",
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor =
-                "var(--color-accent-primary-hover)";
+              e.currentTarget.style.backgroundColor = "var(--color-accent-primary-hover)";
+              e.currentTarget.style.boxShadow = "0 0 30px var(--color-accent-primary-shadow)";
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor =
-                "var(--color-accent-primary-DEFAULT)";
+              e.currentTarget.style.backgroundColor = "var(--color-accent-primary-DEFAULT)";
+              e.currentTarget.style.boxShadow = "0 0 20px var(--color-accent-primary-shadow)";
             }}
           >
             <svg
@@ -185,19 +207,22 @@ export default function Home() {
               <div
                 key={i}
                 ref={(el) => (featureRefs.current[i] = el)}
-                className="opacity-0 translate-y-10 p-8 rounded-2xl shadow-xl transition-all duration-300 text-center"
+                className="p-8 rounded-2xl shadow-xl text-center"
                 style={{
                   backgroundColor: "var(--color-base-dark-800)",
                   border: "1px solid var(--color-base-dark-700)",
+                  transition: "border-color 0.3s ease, transform 0.3s ease",
+                  opacity: 0,
+                  transform: "translateY(40px)",
                 }}
-                onMouseEnter={(e) =>
-                  (e.currentTarget.style.border =
-                    "1px solid var(--color-accent-primary-border)")
-                }
-                onMouseLeave={(e) =>
-                  (e.currentTarget.style.border =
-                    "1px solid var(--color-base-dark-700)")
-                }
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = "var(--color-accent-primary-border)";
+                  e.currentTarget.style.transform = "translateY(-8px)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = "var(--color-base-dark-700)";
+                  e.currentTarget.style.transform = "translateY(0)";
+                }}
               >
                 <div
                   className="text-4xl mb-4"
