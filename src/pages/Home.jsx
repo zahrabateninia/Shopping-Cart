@@ -122,7 +122,7 @@ export default function Home() {
 
           <h1
             ref={titleRef}
-            className="text-6xl md:text-8xl font-extrabold mb-4 tracking-tighter text-transparent bg-clip-text"
+            className="text-4xl sm:text-6xl md:text-8xl font-extrabold mb-4 tracking-tighter text-transparent bg-clip-text"
             style={{
               backgroundImage: "var(--gradient-brand)",
               opacity: 0,
@@ -134,7 +134,7 @@ export default function Home() {
 
           <p
             ref={subtitleRef}
-            className="text-xl md:text-2xl mb-10 max-w-3xl mx-auto leading-relaxed"
+            className="text-base sm:text-xl md:text-2xl mb-8 sm:mb-10 max-w-3xl mx-auto leading-relaxed"
             style={{
               color: "var(--color-base-dark-300)",
               opacity: 0,
@@ -145,11 +145,11 @@ export default function Home() {
             design and lasting durability. Your perfect find is waiting.
           </p>
 
-          {/* CTA Button - Fixed lag issues */}
+          {/* CTA Button  */}
           <Link
             ref={buttonRef}
             to="/shop"
-            className="group inline-flex items-center justify-center font-bold px-8 py-4 rounded-full text-lg"
+            className="group inline-flex items-center justify-center font-bold px-6 py-3 sm:px-8 sm:py-4 rounded-full text-base sm:text-lg"
             style={{
               backgroundColor: "var(--color-accent-primary-DEFAULT)",
               color: "var(--color-base-dark-900)",
@@ -168,7 +168,7 @@ export default function Home() {
             }}
           >
             <svg
-              className="w-6 h-6 mr-2 transition-transform group-hover:rotate-12"
+              className="w-5 h-5 sm:w-6 sm:h-6 mr-2 transition-transform group-hover:rotate-12"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -194,7 +194,7 @@ export default function Home() {
       >
         <div className="max-w-6xl mx-auto">
           <h2
-            className="text-4xl md:text-5xl font-extrabold text-center mb-16 tracking-tight text-transparent bg-clip-text"
+            className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-center mb-12 sm:mb-16 tracking-tight text-transparent bg-clip-text"
             style={{
               backgroundImage: "var(--gradient-brand)",
             }}
