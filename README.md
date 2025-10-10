@@ -9,6 +9,10 @@ Products are fetched dynamically from the **Fake Store API**, and users can brow
 
 🔗 **Live Site:** [Visit the deployed app on Netlify](https://shopppease.netlify.app/)
 
+
+![Homepage Screenshot](src/assets/screenshots/shopPage.png)
+
+
 ---
 
 ##  Features
